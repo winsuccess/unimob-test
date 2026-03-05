@@ -165,8 +165,8 @@ public class TransferManager : MonoBehaviour
                     if (transfer.Delivery != null && transfer.Customer != null)
                     {
                         transfer.Delivery.transform.position
-                            = Vector3.MoveTowards(transfer.Delivery.transform.position, transfer.Customer.PosData[1], speed * Time.deltaTime);
-                        if (Vector3.Distance(transfer.Delivery.transform.position, transfer.Customer.PosData[1]) < 0.01f)
+                            = Vector3.MoveTowards(transfer.Delivery.transform.position, transfer.PosData[1], speed * Time.deltaTime);
+                        if (Vector3.Distance(transfer.Delivery.transform.position, transfer.PosData[1]) < 0.01f)
                         {
                             HumanManager.Instance.PlayIdle(transfer.Delivery);
                             transfer.State = ConstructionTransfer.TransferState.Transfering;
@@ -187,8 +187,8 @@ public class TransferManager : MonoBehaviour
                             transfer.State = ConstructionTransfer.TransferState.End;
                             HumanManager.Instance.PlayMove(transfer.Delivery);
                             ResourceManager.Instance.AddGold(transfer.Collected);
-                            transfer.Delivery.transform.rotation = Quaternion.Euler(0f, transfer.Customer.Seat <= 1 ? -90f : 90f, 0f);
-                         
+                            transfer.Delivery.transform.rotation = Quaternion.Euler(0f, transfer.Seat <= 1 ? -90f : 90f, 0f);
+
                         }
                     }
                     break;
@@ -196,8 +196,8 @@ public class TransferManager : MonoBehaviour
                     if (transfer.Delivery != null && transfer.Customer != null)
                     {
                         transfer.Delivery.transform.position
-                             = Vector3.MoveTowards(transfer.Delivery.transform.position, transfer.Customer.PosData[4], speed * Time.deltaTime);
-                        if (Vector3.Distance(transfer.Delivery.transform.position, transfer.Customer.PosData[4]) < 0.01f)
+                             = Vector3.MoveTowards(transfer.Delivery.transform.position, transfer.PosData[4], speed * Time.deltaTime);
+                        if (Vector3.Distance(transfer.Delivery.transform.position, transfer.PosData[4]) < 0.01f)
                         {
                             HumanManager.Instance.PlayIdle(transfer.Delivery);
                             transfer.State = ConstructionTransfer.TransferState.None;
@@ -289,6 +289,8 @@ public class TransferManager : MonoBehaviour
             if (transfer != null && cus != null)
             {
                 transfer.Customer = cus;
+                transfer.Seat = cus.Seat;
+                transfer.PosData = new List<Vector3>(cus.PosData);
                 transfer.State = ConstructionTransfer.TransferState.Delivering;
                 HumanManager.Instance.PlayCarryMove(transfer.Delivery);
                 transfer.Delivery.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
@@ -305,6 +307,8 @@ public class ConstructionTransfer
     public TransferState State;
     public GameObject Delivery;
     public CustomerTransfer Customer;
+    public int Seat;
+    public List<Vector3> PosData;
     public double Collected;
     public float collectTime; //.5s collect
     public float transferTime; //.5s transfer
@@ -339,4 +343,7 @@ public class CustomerTransfer
         Transfering,
         End,
     }
+
+    public CustomerTransfer() { }
+
 }

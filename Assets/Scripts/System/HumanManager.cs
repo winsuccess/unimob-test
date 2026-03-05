@@ -59,6 +59,7 @@ public class HumanManager : MonoBehaviour
         for (int i = 0; i < _poolSize; i++)
         {
             GameObject obj = Instantiate(prefab, transform);
+            obj.name = prefab.name + "_" + i;   // set index name
             obj.SetActive(false);
             pool.Enqueue(obj);
         }

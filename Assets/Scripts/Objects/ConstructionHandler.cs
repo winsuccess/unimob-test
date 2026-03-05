@@ -47,21 +47,6 @@ public class ConstructionHandler : MonoBehaviour
         });
     }
 
-    void Update()
-    {
-
-    }
-
-    public void OnMouseDown()
-    {
-        if (EventSystem.current.IsPointerOverGameObject())
-            return;
-        if (boxCollider != null)
-        {
-            constructionUI.OnShowUI();
-        }
-    }
-
     IEnumerator HandlerUnlock()
     {
         _cons.state = -1; // isBuilding
@@ -76,6 +61,11 @@ public class ConstructionHandler : MonoBehaviour
         constructionUI.OnShowInfo();
         TransferManager.Instance.AddConstruction(this);
         EffectManager.Instance.SpawnBuildEffect(transform.position);
+    }
+
+    public ConstructionUI GetConstructionUI()
+    {
+        return constructionUI;
     }
 
     public Vector3 PositionStart()
@@ -96,7 +86,7 @@ public class ConstructionHandler : MonoBehaviour
     {
         return _cons.GetCurrentProfit();
     }
-     public double GetNextProfit()
+    public double GetNextProfit()
     {
         return _cons.GetNextProfit();
     }
