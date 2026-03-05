@@ -1,0 +1,5 @@
+-Sử dụng các design pattern thông dụng để xây dựng môi trường: singleton,
+object pooling, state, observer pattern
+-Sử dụng scriptable object, serializable class để lưu trữ dữ liệu
+- Sử dụng queue để thực hiện chung truyền hàng hóa
+- Những phần chưa hoàn thiện: tối ưu hóa đường đi của Delivery, hiệnvà chuyển giao tomato
