@@ -1,0 +1,10 @@
+Library/
+Temp/
+Build/
+Builds/
+Logs/
+UserSettings/
+
+.vs/
+.vscode/
+.idea/

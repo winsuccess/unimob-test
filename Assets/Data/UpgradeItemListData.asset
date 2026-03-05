@@ -1,0 +1,111 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b36b8f3e6cb1fbb4aaca05153f0d6159, type: 3}
+  m_Name: UpgradeItemListData
+  m_EditorClassIdentifier: Assembly-CSharp::UpgradeItemListData
+  UpgradeItems:
+  - Id: 1
+    Title: Clay Profit
+    Desc: 'x2 profit to clay construction '
+    Cost: 1000
+    Icon: {fileID: 21300000, guid: 40ac2c9f66ad60340ae5ae80eeff9656, type: 3}
+    Amount: 2
+    TargetConstructionId: 1
+    Type: 0
+  - Id: 2
+    Title: Add Customer
+    Desc: +1 Customer
+    Cost: 5000
+    Icon: {fileID: 21300000, guid: 4544ffb4d02b34231a4f6e675469a7b7, type: 3}
+    Amount: 1
+    TargetConstructionId: 0
+    Type: 2
+  - Id: 3
+    Title: Steel Profit
+    Desc: 'x2 profit to steel construction '
+    Cost: 10000
+    Icon: {fileID: 21300000, guid: 5cba354dcaa12794f97531cfdf5b9bee, type: 3}
+    Amount: 2
+    TargetConstructionId: 2
+    Type: 0
+  - Id: 4
+    Title: Wheat Profit
+    Desc: 'x2 profit to wheat construction '
+    Cost: 20000
+    Icon: {fileID: 21300000, guid: 9f6e174293e737a44b0c7c85e4fd86f6, type: 3}
+    Amount: 2
+    TargetConstructionId: 3
+    Type: 0
+  - Id: 5
+    Title: Wood Profit
+    Desc: 'x2 profit to wood construction '
+    Cost: 50000
+    Icon: {fileID: 21300000, guid: b506a3b43045c0b49ad14f0339fb6956, type: 3}
+    Amount: 2
+    TargetConstructionId: 4
+    Type: 0
+  - Id: 6
+    Title: Global Profit
+    Desc: x2 profit to all construction
+    Cost: 100000
+    Icon: {fileID: 21300000, guid: ccd09cdcfe062884e965923a228f88a7, type: 3}
+    Amount: 2
+    TargetConstructionId: 0
+    Type: 1
+  - Id: 7
+    Title: Add Customer
+    Desc: +2 Customer
+    Cost: 500000
+    Icon: {fileID: 21300000, guid: 4544ffb4d02b34231a4f6e675469a7b7, type: 3}
+    Amount: 2
+    TargetConstructionId: 0
+    Type: 2
+  - Id: 8
+    Title: Clay Profit
+    Desc: 'x3 profit to clay construction '
+    Cost: 1000000
+    Icon: {fileID: 21300000, guid: 40ac2c9f66ad60340ae5ae80eeff9656, type: 3}
+    Amount: 3
+    TargetConstructionId: 1
+    Type: 0
+  - Id: 9
+    Title: Steel Profit
+    Desc: 'x3 profit to steel construction '
+    Cost: 2000000
+    Icon: {fileID: 21300000, guid: 5cba354dcaa12794f97531cfdf5b9bee, type: 3}
+    Amount: 3
+    TargetConstructionId: 2
+    Type: 0
+  - Id: 10
+    Title: Wheat Profit
+    Desc: 'x3 profit to Wheat construction '
+    Cost: 5000000
+    Icon: {fileID: 21300000, guid: 9f6e174293e737a44b0c7c85e4fd86f6, type: 3}
+    Amount: 3
+    TargetConstructionId: 3
+    Type: 0
+  - Id: 11
+    Title: Wood Profit
+    Desc: 'x3 profit to wood construction '
+    Cost: 7500000
+    Icon: {fileID: 21300000, guid: b506a3b43045c0b49ad14f0339fb6956, type: 3}
+    Amount: 3
+    TargetConstructionId: 4
+    Type: 0
+  - Id: 12
+    Title: Global Profit
+    Desc: x3 profit to all construction
+    Cost: 10000000
+    Icon: {fileID: 21300000, guid: ccd09cdcfe062884e965923a228f88a7, type: 3}
+    Amount: 3
+    TargetConstructionId: 0
+    Type: 1
