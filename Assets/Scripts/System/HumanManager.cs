@@ -65,14 +65,14 @@ public class HumanManager : MonoBehaviour
         }
     }
 
-    public GameObject SpawnDelivery(Vector3 position)
+    public DeliveryHandler SpawnDelivery(Vector3 position)
     {
-        return SpawnFromPool(_deliveryPool, _deliveryGO, position);
+        return SpawnFromPool(_deliveryPool, _deliveryGO, position).GetComponent<DeliveryHandler>();
     }
 
-    public GameObject SpawnCustomer(Vector3 position)
+    public CustomerHandler SpawnCustomer(Vector3 position)
     {
-        return SpawnFromPool(_customerPool, _customerGO, position);
+        return SpawnFromPool(_customerPool, _customerGO, position).GetComponent<CustomerHandler>();
     }
 
     private GameObject SpawnFromPool(Queue<GameObject> pool, GameObject prefab, Vector3 position)

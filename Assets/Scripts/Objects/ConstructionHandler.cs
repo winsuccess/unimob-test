@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UIElements;
@@ -22,6 +23,8 @@ public class ConstructionHandler : MonoBehaviour
     private Transform _deliveryStart;
     [SerializeField]
     private Transform _deliveryEnd;
+    [SerializeField]
+    private List<GameObject> _tomatoes;
 
     private BoxCollider boxCollider;
 
@@ -61,6 +64,7 @@ public class ConstructionHandler : MonoBehaviour
         constructionUI.OnShowInfo();
         TransferManager.Instance.AddConstruction(this);
         EffectManager.Instance.SpawnBuildEffect(transform.position);
+        GrowTomatoes(0.5f);
     }
 
     public ConstructionUI GetConstructionUI()
@@ -89,6 +93,32 @@ public class ConstructionHandler : MonoBehaviour
     public double GetNextProfit()
     {
         return _cons.GetNextProfit();
+    }
+
+
+    public void GrowTomatoes(float delay = 0f)
+    {
+        StartCoroutine(DoGrowTomatoes(delay));
+    }
+
+    public void CollectTomatoes()
+    {
+        for (int i = 0; i < _tomatoes.Count; i++)
+        {
+            _tomatoes[i].SetActive(false);
+        }
+    }
+
+    private IEnumerator DoGrowTomatoes(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        yield return new WaitForSeconds(0.05f);
+        for (int i = 0; i < _tomatoes.Count; i++)
+        {
+            _tomatoes[i].SetActive(true);
+            yield return new WaitForSeconds(0.15f);
+        }
     }
 }
 

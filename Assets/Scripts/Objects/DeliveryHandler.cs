@@ -1,16 +1,21 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class DeliveryHandler : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [SerializeField] private Animator _animator;
+    [SerializeField] private List<GameObject> _tomatoes;
+
+    public void PlayAnim(string name)
     {
-        
+        _animator.Play(name);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void ShowTomatoes(bool show)
     {
-        
+        foreach (var tomato in _tomatoes)
+        {
+            tomato.SetActive(show);
+        }
     }
 }

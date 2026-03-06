@@ -115,7 +115,7 @@ public class TransferManager : MonoBehaviour
                 case ConstructionTransfer.TransferState.None:
                     transfer.State = ConstructionTransfer.TransferState.Collecting;
                     transfer.Delivery = HumanManager.Instance.SpawnDelivery(transfer.constructionHandler.PositionStart());
-                    HumanManager.Instance.PlayMove(transfer.Delivery);
+                    transfer.Delivery.PlayAnim("Move");
                     transfer.Delivery.transform.rotation = Quaternion.Euler(0f, transfer.constructionHandler.GetSide() == 1 ? -90f : 90f, 0f);
                     break;
                 case ConstructionTransfer.TransferState.Collecting:
@@ -127,23 +127,26 @@ public class TransferManager : MonoBehaviour
                         {
                             transfer.State = ConstructionTransfer.TransferState.Collected;
                             transfer.Collected = transfer.constructionHandler.GetCurrentProfit();
-                            HumanManager.Instance.PlayIdle(transfer.Delivery);
+                            transfer.Delivery.PlayAnim("Idle");
                             transfer.Delivery.transform.rotation = Quaternion.Euler(0f, -180f, 0f);
+                            transfer.constructionHandler.CollectTomatoes();
                         }
                     }
                     break;
                 case ConstructionTransfer.TransferState.Collected:
                     if (transfer.Delivery != null)
                     {
-                        if (transfer.collectTime < .5f)
+                        if (transfer.collectTime < .25f)
                         {
                             transfer.collectTime += Time.deltaTime;
                         }
                         else
                         {
-                            HumanManager.Instance.PlayCarryIdle(transfer.Delivery);
+                            transfer.Delivery.PlayAnim("CarryIdle");
                             transfer.State = ConstructionTransfer.TransferState.WaitingDelivery;
                             _deliveryTransferQueue.Enqueue(transfer);
+                            transfer.constructionHandler.GrowTomatoes();
+                            transfer.Delivery.ShowTomatoes(true);
                         }
                     }
                     break;
@@ -168,24 +171,25 @@ public class TransferManager : MonoBehaviour
                             = Vector3.MoveTowards(transfer.Delivery.transform.position, transfer.PosData[1], speed * Time.deltaTime);
                         if (Vector3.Distance(transfer.Delivery.transform.position, transfer.PosData[1]) < 0.01f)
                         {
-                            HumanManager.Instance.PlayIdle(transfer.Delivery);
+                            transfer.Delivery.PlayAnim("Idle");
                             transfer.State = ConstructionTransfer.TransferState.Transfering;
                             transfer.Customer.State = CustomerTransfer.TransferState2.Transfering;
                             EffectManager.Instance.SpawnPayEffect(transfer.Customer.Customer.transform.position);
+                            transfer.Delivery.ShowTomatoes(false);
                         }
                     }
                     break;
                 case ConstructionTransfer.TransferState.Transfering:
                     if (transfer.Delivery != null && transfer.Customer != null)
                     {
-                        if (transfer.transferTime < .5f)
+                        if (transfer.transferTime < .25f)
                         {
                             transfer.transferTime += Time.deltaTime;
                         }
                         else
                         {
                             transfer.State = ConstructionTransfer.TransferState.End;
-                            HumanManager.Instance.PlayMove(transfer.Delivery);
+                            transfer.Delivery.PlayAnim("Move");
                             ResourceManager.Instance.AddGold(transfer.Collected);
                             transfer.Delivery.transform.rotation = Quaternion.Euler(0f, transfer.Seat <= 1 ? -90f : 90f, 0f);
 
@@ -199,10 +203,10 @@ public class TransferManager : MonoBehaviour
                              = Vector3.MoveTowards(transfer.Delivery.transform.position, transfer.PosData[4], speed * Time.deltaTime);
                         if (Vector3.Distance(transfer.Delivery.transform.position, transfer.PosData[4]) < 0.01f)
                         {
-                            HumanManager.Instance.PlayIdle(transfer.Delivery);
+                            transfer.Delivery.PlayAnim("Idle");
                             transfer.State = ConstructionTransfer.TransferState.None;
                             //Return
-                            HumanManager.Instance.ReturnToPool(transfer.Delivery, true);
+                            HumanManager.Instance.ReturnToPool(transfer.Delivery.gameObject, true);
                             transfer.Collected = 0;
                             transfer.collectTime = 0f;
                             transfer.transferTime = 0f;
@@ -231,7 +235,7 @@ public class TransferManager : MonoBehaviour
                     transfer.PosData = _market.GetPos(seat);
                     transfer.Customer = HumanManager.Instance.SpawnCustomer(transfer.PosData[2]);
                     transfer.Customer.transform.rotation = Quaternion.Euler(0f, transfer.Seat <= 1 ? 90f : -90f, 0f);
-                    HumanManager.Instance.PlayMove(transfer.Customer);
+                    transfer.Customer.PlayAnim("Move");
                     break;
                 case CustomerTransfer.TransferState2.Positioning:
                     if (transfer.Customer != null)
@@ -241,7 +245,7 @@ public class TransferManager : MonoBehaviour
                         if (Vector3.Distance(transfer.Customer.transform.position, transfer.PosData[0]) < 0.01f)
                         {
                             transfer.Customer.transform.rotation = Quaternion.Euler(0f, -180f, 0f);
-                            HumanManager.Instance.PlayIdle(transfer.Customer);
+                            transfer.Customer.PlayAnim("Idle");
                             transfer.State = CustomerTransfer.TransferState2.Waiting;
                             _customerTransferQueue.Enqueue(transfer);
                         }
@@ -250,7 +254,7 @@ public class TransferManager : MonoBehaviour
                 case CustomerTransfer.TransferState2.Waiting:
                     break;
                 case CustomerTransfer.TransferState2.Transfering:
-                    if (transfer.transferTime < .5f)
+                    if (transfer.transferTime < .25f)
                     {
                         transfer.transferTime += Time.deltaTime;
                     }
@@ -258,7 +262,8 @@ public class TransferManager : MonoBehaviour
                     {
                         transfer.State = CustomerTransfer.TransferState2.End;
                         seats[transfer.Seat] = 0;
-                        HumanManager.Instance.PlayCarryMove(transfer.Customer);
+                        transfer.Customer.ShowTomatoes(true);
+                        transfer.Customer.PlayAnim("CarryMove");
                         transfer.Customer.transform.rotation = Quaternion.Euler(0f, transfer.Seat <= 1 ? -90f : 90f, 0f);
                     }
                     break;
@@ -270,9 +275,10 @@ public class TransferManager : MonoBehaviour
                             = Vector3.MoveTowards(transfer.Customer.transform.position, transfer.PosData[3], speed * Time.deltaTime);
                         if (Vector3.Distance(transfer.Customer.transform.position, transfer.PosData[3]) < 0.01f)
                         {
-                            HumanManager.Instance.PlayIdle(transfer.Customer);
+                            transfer.Customer.ShowTomatoes(false);
+                            transfer.Customer.PlayAnim("Idle");
                             transfer.State = CustomerTransfer.TransferState2.None;
-                            HumanManager.Instance.ReturnToPool(transfer.Customer, false);
+                            HumanManager.Instance.ReturnToPool(transfer.Customer.gameObject, false);
                             transfer.transferTime = 0f;
                             transfer.Customer = null;
                         }
@@ -292,7 +298,7 @@ public class TransferManager : MonoBehaviour
                 transfer.Seat = cus.Seat;
                 transfer.PosData = new List<Vector3>(cus.PosData);
                 transfer.State = ConstructionTransfer.TransferState.Delivering;
-                HumanManager.Instance.PlayCarryMove(transfer.Delivery);
+                transfer.Delivery.PlayAnim("CarryMove");
                 transfer.Delivery.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
             }
         }
@@ -305,13 +311,13 @@ public class ConstructionTransfer
     public int ID;
     public ConstructionHandler constructionHandler;
     public TransferState State;
-    public GameObject Delivery;
+    public DeliveryHandler Delivery;
     public CustomerTransfer Customer;
     public int Seat;
     public List<Vector3> PosData;
     public double Collected;
-    public float collectTime; //.5s collect
-    public float transferTime; //.5s transfer
+    public float collectTime; //.25s collect
+    public float transferTime; //.25s transfer
 
     public enum TransferState
     {
@@ -329,12 +335,11 @@ public class ConstructionTransfer
 public class CustomerTransfer
 {
     public int ID;
-    public GameObject customer;
     public int Seat; // 0-3
     public TransferState2 State;
-    public GameObject Customer;
+    public CustomerHandler Customer;
     public List<Vector3> PosData;
-    public float transferTime; //.5s transfer
+    public float transferTime; //.25s transfer
     public enum TransferState2
     {
         None,
